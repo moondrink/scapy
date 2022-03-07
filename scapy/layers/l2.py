@@ -23,10 +23,11 @@ from scapy import consts
 from scapy.data import ARPHDR_ETHER, ARPHDR_LOOPBACK, ARPHDR_METRICOM, \
     DLT_ETHERNET_MPACKET, DLT_LINUX_IRDA, DLT_LINUX_SLL, DLT_LOOP, \
     DLT_NULL, ETHER_ANY, ETHER_BROADCAST, ETHER_TYPES, ETH_P_ARP, \
-    ETH_P_MACSEC
+    ETH_P_MACSEC, DLT_LINUX_SLL_V2
 from scapy.error import warning, ScapyNoDstMacException, log_runtime
 from scapy.fields import (
     BCDFloatField,
+    ByteEnumField,
     BitField,
     ByteField,
     ConditionalField,
@@ -304,6 +305,22 @@ class CookedLinux(Packet):
                    ShortField("lladdrlen", 0),
                    StrFixedLenField("src", b"", 8),
                    XShortEnumField("proto", 0x800, ETHER_TYPES)]
+
+class CookedLinuxV2(Packet):
+    # Documentation: http://www.tcpdump.org/linktypes/LINKTYPE_LINUX_SLL2.html
+    name = "cooked linux v2"
+    # from wireshark's database
+    fields_desc = [XShortEnumField("proto", 0x800, ETHER_TYPES),
+                   ShortField("reserved", 0),
+                   IntField("ifindex", 0),
+                   XShortField("lladdrtype", 512),
+                   ByteEnumField("pkttype", 0, {0: "unicast",
+                                         1: "broadcast",
+                                         2: "multicast",
+                                         3: "unicast-to-another-host",
+                                         4: "sent-by-us"}),
+                   ByteField("lladdrlen", 0),
+                   StrFixedLenField("src", "", 8)]
 
 
 class MPacketPreamble(Packet):
@@ -652,6 +669,11 @@ bind_layers(CookedLinux, Dot1Q, proto=33024)
 bind_layers(CookedLinux, Dot1AD, type=0x88a8)
 bind_layers(CookedLinux, Ether, proto=1)
 bind_layers(CookedLinux, ARP, proto=2054)
+bind_layers(CookedLinuxV2, LLC, proto=122)
+bind_layers(CookedLinuxV2, Dot1Q, proto=33024)
+bind_layers(CookedLinuxV2, Dot1AD, type=0x88a8)
+bind_layers(CookedLinuxV2, Ether, proto=1)
+bind_layers(CookedLinuxV2, ARP, proto=2054)
 bind_layers(MPacketPreamble, Ether)
 bind_layers(GRE, LLC, proto=122)
 bind_layers(GRE, Dot1Q, proto=33024)
@@ -674,8 +696,10 @@ conf.l2types.register_num2layer(ARPHDR_METRICOM, Ether)
 conf.l2types.register_num2layer(ARPHDR_LOOPBACK, Ether)
 conf.l2types.register_layer2num(ARPHDR_ETHER, Dot3)
 conf.l2types.register(DLT_LINUX_SLL, CookedLinux)
+conf.l2types.register(DLT_LINUX_SLL_V2, CookedLinuxV2)
 conf.l2types.register(DLT_ETHERNET_MPACKET, MPacketPreamble)
 conf.l2types.register_num2layer(DLT_LINUX_IRDA, CookedLinux)
+conf.l2types.register_num2layer(DLT_LINUX_IRDA, CookedLinuxV2)
 conf.l2types.register(DLT_LOOP, Loopback)
 conf.l2types.register_num2layer(DLT_NULL, Loopback)
 

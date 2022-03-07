@@ -17,7 +17,7 @@ from scapy.fields import BitField, ByteField, XByteField,\
     XStrLenField, XStrFixedLenField, LenField, FieldLenField, FieldListField,\
     PacketField, PacketListField, ConditionalField, PadField
 from scapy.packet import Packet, Padding, bind_layers
-from scapy.layers.l2 import SourceMACField, Ether, CookedLinux, GRE, SNAP
+from scapy.layers.l2 import SourceMACField, Ether, CookedLinux, GRE, SNAP, CookedLinuxV2
 from scapy.config import conf
 from scapy.compat import orb, chb
 
@@ -770,6 +770,7 @@ class MKAPDU(Packet):
 bind_layers(Ether, EAPOL, type=34958)
 bind_layers(Ether, EAPOL, dst='01:80:c2:00:00:03', type=34958)
 bind_layers(CookedLinux, EAPOL, proto=34958)
+bind_layers(CookedLinuxV2, EAPOL, proto=34958)
 bind_layers(GRE, EAPOL, proto=34958)
 bind_layers(EAPOL, EAP, type=0)
 bind_layers(SNAP, EAPOL, code=34958)

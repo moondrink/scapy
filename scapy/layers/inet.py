@@ -24,7 +24,7 @@ from scapy.base_classes import Gen, Net
 from scapy.data import ETH_P_IP, ETH_P_ALL, DLT_RAW, DLT_RAW_ALT, DLT_IPV4, \
     IP_PROTOS, TCP_SERVICES, UDP_SERVICES
 from scapy.layers.l2 import Ether, Dot3, getmacbyip, CookedLinux, GRE, SNAP, \
-    Loopback
+    Loopback, CookedLinuxV2
 from scapy.compat import raw, chb, orb, bytes_encode
 from scapy.config import conf
 from scapy.extlib import plt, MATPLOTLIB, MATPLOTLIB_INLINED, \
@@ -1022,6 +1022,7 @@ class ICMPerror(ICMP):
 
 bind_layers(Ether, IP, type=2048)
 bind_layers(CookedLinux, IP, proto=2048)
+bind_layers(CookedLinuxV2, IP, proto=2048)
 bind_layers(GRE, IP, proto=2048)
 bind_layers(SNAP, IP, code=2048)
 bind_bottom_up(Loopback, IP, type=0)

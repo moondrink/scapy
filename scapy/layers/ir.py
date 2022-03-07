@@ -10,7 +10,7 @@ IrDA infrared data communication.
 from scapy.packet import Packet, bind_layers
 from scapy.fields import BitEnumField, ByteEnumField, StrField, XBitField, \
     XByteField, XIntField, XShortField
-from scapy.layers.l2 import CookedLinux
+from scapy.layers.l2 import CookedLinux, CookedLinuxV2
 
 
 # IR
@@ -41,5 +41,6 @@ class IrLMP(Packet):
 
 
 bind_layers(CookedLinux, IrLAPHead, proto=23)
+bind_layers(CookedLinuxV2, IrLAPHead, proto=23)
 bind_layers(IrLAPHead, IrLAPCommand, Type=1)
 bind_layers(IrLAPCommand, IrLMP,)

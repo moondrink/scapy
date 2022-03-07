@@ -48,7 +48,7 @@ from scapy.fields import BitEnumField, BitField, ByteEnumField, ByteField, \
     X3BytesField, XBitField, XIntField, XShortField
 from scapy.layers.inet import IP, IPTools, TCP, TCPerror, TracerouteResult, \
     UDP, UDPerror
-from scapy.layers.l2 import CookedLinux, Ether, GRE, Loopback, SNAP
+from scapy.layers.l2 import CookedLinux, Ether, GRE, Loopback, SNAP, CookedLinuxV2
 import scapy.modules.six as six
 from scapy.packet import bind_layers, Packet, Raw
 from scapy.sendrecv import sendp, sniff, sr, srp1
@@ -4070,6 +4070,7 @@ conf.l2types.register_num2layer(DLT_RAW_ALT, IPv46)
 
 bind_layers(Ether, IPv6, type=0x86dd)
 bind_layers(CookedLinux, IPv6, proto=0x86dd)
+bind_layers(CookedLinuxV2, IPv6, proto=0x86dd)
 bind_layers(GRE, IPv6, proto=0x86dd)
 bind_layers(SNAP, IPv6, code=0x86dd)
 # AF_INET6 values are platform-dependent. For a detailed explaination, read

@@ -16,7 +16,7 @@ from scapy.data import DLT_PPP, DLT_PPP_SERIAL, DLT_PPP_ETHER, \
 from scapy.compat import orb
 from scapy.packet import Packet, bind_layers
 from scapy.layers.eap import EAP
-from scapy.layers.l2 import Ether, CookedLinux, GRE_PPTP
+from scapy.layers.l2 import Ether, CookedLinux, GRE_PPTP, CookedLinuxV2
 from scapy.layers.inet import IP
 from scapy.layers.inet6 import IPv6
 from scapy.fields import (
@@ -892,7 +892,9 @@ bind_layers(PPPoED, PPPoED_Tags, type=1)
 bind_layers(Ether, PPPoED, type=0x8863)
 bind_layers(Ether, PPPoE, type=0x8864)
 bind_layers(CookedLinux, PPPoED, proto=0x8863)
+bind_layers(CookedLinuxV2, PPPoED, proto=0x8863)
 bind_layers(CookedLinux, PPPoE, proto=0x8864)
+bind_layers(CookedLinuxV2, PPPoE, proto=0x8864)
 bind_layers(PPPoE, PPP, code=0)
 bind_layers(HDLC, PPP,)
 bind_layers(DIR_PPP, PPP)

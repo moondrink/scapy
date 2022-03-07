@@ -25,7 +25,7 @@ from scapy.fields import FieldLenField, FlagsField, StrLenField, \
     ThreeBytesField, XBitField, ScalingField, ConditionalField, LenField
 from scapy.volatile import RandFloat, RandBinFloat
 from scapy.packet import Packet, bind_layers
-from scapy.layers.l2 import CookedLinux
+from scapy.layers.l2 import CookedLinux, CookedLinuxV2
 from scapy.error import Scapy_Exception
 from scapy.plist import PacketList
 from scapy.supersocket import SuperSocket
@@ -144,6 +144,7 @@ class CAN(Packet):
 
 conf.l2types.register(DLT_CAN_SOCKETCAN, CAN)
 bind_layers(CookedLinux, CAN, proto=12)
+bind_layers(CookedLinuxV2, CAN, proto=12)
 
 
 class SignalField(ScalingField):
